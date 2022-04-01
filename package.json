@@ -1,0 +1,19 @@
+{
+  "name": "rebase-blockchain",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/basewd/rebase-blockchain.git"
+  },
+  "keywords": [
+    "blockchain"
+  ],
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/basewd/rebase-blockchain#readme"
+}
