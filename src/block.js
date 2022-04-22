@@ -9,7 +9,7 @@ class Block {
   }
 
   static genesis() {
-    const timestamp = new Date('2022-04-08')
+    const timestamp = new Date('2022-04-08').getTime()
     const lastHash = '0'
     const data = 'Hello world from the blockchain genesis!'
     const hash = this.hash(timestamp, lastHash, data)
@@ -18,7 +18,7 @@ class Block {
   }
 
   static mineBlock(lastBlock, data) {
-    const timestamp = new Date()
+    const timestamp = Date.now()
     const lastHash = this.hashFromBlock(lastBlock)
     const hash = this.hash(timestamp, lastHash, data)
 
