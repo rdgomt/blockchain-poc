@@ -2,9 +2,10 @@
   "name": "rebase-blockchain",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "./src/app",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon ./src/app",
+    "test": "jest --watchAll"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,13 @@
   ],
   "author": "",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/basewd/rebase-blockchain#readme"
+  "homepage": "https://bitbucket.org/basewd/rebase-blockchain#readme",
+  "dependencies": {
+    "crypto-js": "^4.1.1",
+    "express": "^4.17.3"
+  },
+  "devDependencies": {
+    "jest": "^27.5.1",
+    "nodemon": "^2.0.15"
+  }
 }
