@@ -1,4 +1,4 @@
-const SHA256 = require('crypto-js/sha256')
+const Crypto = require('./utils/crypto')
 
 const MINE_RATE = 3000 // 3 seconds
 
@@ -42,7 +42,7 @@ class Block {
   }
 
   static hash(timestamp, lastHash, data, nonce, difficulty) {
-    return SHA256(`${timestamp}${lastHash}${data}${nonce}${difficulty}`).toString()
+    return Crypto.hash(`${timestamp}${lastHash}${data}${nonce}${difficulty}`).toString()
   }
 
   static hashFromBlock(block) {
