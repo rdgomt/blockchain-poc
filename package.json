@@ -5,7 +5,7 @@
   "main": "./src/app",
   "scripts": {
     "dev": "nodemon ./src/app",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll --coverage"
   },
   "repository": {
     "type": "git",
