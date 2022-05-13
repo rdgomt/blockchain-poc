@@ -7,6 +7,10 @@ class Wallet {
     this.address = this.keyPair.getPublic().encode('hex')
   }
 
+  sign(hash) {
+    return this.keyPair.sign(hash)
+  }
+
   toString() {
     return `
       - Address = ${this.address.toString()}
