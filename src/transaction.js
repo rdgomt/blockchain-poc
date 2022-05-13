@@ -8,16 +8,10 @@ class Transaction {
     this.outputs = []
   }
 
-  verifyBalance(amount, balance) {
-    if (amount > balance) {
-      throw new Error('Transaction Error: insufficient balance.')
-    }
-  }
-
   static create(senderWallet, recipientAddress, amount) {
+    senderWallet.verifyBalance(amount)
+    
     const transaction = new Transaction()
-
-    transaction.verifyBalance(amount, senderWallet.balance)
 
     transaction.outputs.push(...[
       // Debit transaction from sender's account
@@ -58,7 +52,7 @@ class Transaction {
   update(senderWallet, recipientAddress, amount) {
     const senderOutput = this.outputs.find((output) => output.address === senderWallet.address)
 
-    this.verifyBalance(amount, senderWallet.balance - senderOutput.amount)
+    senderWallet.verifyBalance(amount + senderOutput.amount * (-1))
 
     senderOutput.amount = senderOutput.amount - amount
 
