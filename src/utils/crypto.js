@@ -1,7 +1,7 @@
 const SHA256 = require('crypto-js/sha256')
-
-const uuidv1 = require('uuid').v1 // unique id based on timestamp
+const uuid = require('uuid').v4
 const EC = require('elliptic').ec // Elliptic Curve Cryptography
+
 const ec = new EC('secp256k1')
 
 class Crypto {
@@ -10,7 +10,7 @@ class Crypto {
   }
 
   static genId() {
-    return uuidv1()
+    return uuid()
   }
 
   static hash(data) {
