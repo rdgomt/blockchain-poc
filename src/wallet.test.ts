@@ -1,8 +1,11 @@
-const TransactionPool = require('./transaction-pool')
-const Wallet = require('./wallet')
+import { TransactionPool } from './transaction-pool'
+import { Wallet } from './wallet'
 
 describe('Wallet', () => {
-  let wallet, transactionPool, recipientAddress, amount
+  let wallet: Wallet,
+    transactionPool: TransactionPool,
+    recipientAddress: string,
+    amount: number
 
   beforeEach(() => {
     wallet = new Wallet()
@@ -16,11 +19,16 @@ describe('Wallet', () => {
   })
 
   it('should be able to create a transaction', () => {
-    const transaction = wallet.createTransaction(recipientAddress, amount, transactionPool)
+    const transaction = wallet.createTransaction(
+      recipientAddress,
+      amount,
+      transactionPool
+    )
     expect(transaction).toBeTruthy()
 
-    const transactionInTransactionPool = transactionPool.transactions
-      .filter(t => t.input.address === wallet.address)
+    const transactionInTransactionPool = transactionPool.transactions.filter(
+      (t) => t.input.address === wallet.address
+    )
 
     expect(transactionInTransactionPool.length).toEqual(1)
     expect(transactionInTransactionPool[0].outputs.length).toEqual(2)
@@ -30,8 +38,9 @@ describe('Wallet', () => {
     wallet.createTransaction(recipientAddress, amount, transactionPool)
     wallet.createTransaction(recipientAddress, amount + 10, transactionPool)
 
-    const transactionInTransactionPool = transactionPool.transactions
-      .filter(t => t.input.address === wallet.address)
+    const transactionInTransactionPool = transactionPool.transactions.filter(
+      (t) => t.input.address === wallet.address
+    )
 
     expect(transactionInTransactionPool.length).toEqual(1)
     expect(transactionInTransactionPool[0].outputs.length).toEqual(3)

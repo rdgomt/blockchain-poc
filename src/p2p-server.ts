@@ -1,10 +1,14 @@
-const WebSocket = require('ws')
+import WebSocket from 'ws'
+import { Blockchain } from './blockchain'
 
-const P2P_PORT = process.env.P2P_PORT || 5001
+const P2P_PORT = Number(process.env.P2P_PORT) || 5001
 const PEERS = process.env.PEERS?.split(',') || []
 
-class P2pServer {
-  constructor(blockchain) {
+export class P2pServer {
+  private readonly blockchain: Blockchain
+  private readonly sockets: WebSocket.WebSocket[]
+
+  constructor(blockchain: Blockchain) {
     this.blockchain = blockchain
     this.sockets = []
   }
@@ -16,34 +20,32 @@ class P2pServer {
     console.log(`P2p server listening on port ${P2P_PORT}.`)
   }
 
-  connectSocket(socket) {
+  connectSocket(socket: WebSocket.WebSocket) {
     this.sockets.push(socket)
     this.messageHandler(socket)
     this.sendChain(socket)
     console.log(`Socket connected.`)
   }
 
-  sendChain(socket) {
+  sendChain(socket: WebSocket.WebSocket) {
     socket.send(JSON.stringify(this.blockchain.chain))
   }
 
   connectToPeers() {
-    PEERS.forEach(peer => {
+    PEERS.forEach((peer) => {
       const socket = new WebSocket(peer)
       socket.on('open', () => this.connectSocket(socket))
     })
   }
 
-  messageHandler(socket) {
+  messageHandler(socket: WebSocket.WebSocket) {
     socket.on('message', (message) => {
-      const newChain = JSON.parse(message)
+      const newChain = JSON.parse(message.toString())
       this.blockchain.replaceChain(newChain)
     })
   }
 
   syncChain() {
-    this.sockets.forEach(socket => this.sendChain(socket))
+    this.sockets.forEach((socket) => this.sendChain(socket))
   }
 }
-
-module.exports = P2pServer

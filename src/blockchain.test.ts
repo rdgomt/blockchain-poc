@@ -1,9 +1,9 @@
-const { Block } = require('./block')
-const Blockchain = require('./blockchain')
+import { Block } from './block'
+import { Blockchain } from './blockchain'
 
 describe('Blockchain', () => {
-  let blockchain
-  let blockchain2
+  let blockchain: Blockchain
+  let blockchain2: Blockchain
 
   beforeEach(() => {
     blockchain = new Blockchain()

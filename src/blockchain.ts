@@ -1,18 +1,20 @@
-const { Block } = require('./block')
+import { Block } from './block'
 
-class Blockchain {
+export class Blockchain {
+  public chain: Block[]
+
   constructor() {
     this.chain = [Block.genesis()]
   }
 
-  addBlock(data) {
+  addBlock(data: unknown) {
     const lastBlock = this.chain[this.chain.length - 1]
     const block = Block.mineBlock(lastBlock, data)
     this.chain.push(block)
     return block
   }
 
-  isValidChain(chain) {
+  isValidChain(chain: Block[]) {
     const originalGenesisBlockString = JSON.stringify(Block.genesis())
     const inputGenesisBlockString = JSON.stringify(chain[0])
 
@@ -39,16 +41,15 @@ class Blockchain {
     return true
   }
 
-  replaceChain(newChain) {
+  replaceChain(newChain: Block[]) {
     if (newChain.length <= this.chain.length) {
       return console.log('Input chain is no longer than the current chain.')
-    } if (!this.isValidChain(newChain)) {
+    }
+    if (!this.isValidChain(newChain)) {
       return console.log('The input chain is not valid.')
     }
 
     console.log('Replacing main chain with the new chain.')
-    return this.chain = newChain
+    return (this.chain = newChain)
   }
 }
-
-module.exports = Blockchain

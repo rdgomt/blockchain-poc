@@ -1,16 +1,16 @@
-const Crypto = require('./utils/crypto')
+import { Crypto } from './utils/crypto'
 
-const MINE_RATE = 3000 // 3 seconds
+export const MINE_RATE = 3000 // 3 seconds
 
-class Block {
-  constructor(timestamp, lastHash, data, hash, nonce, difficulty) {
-    this.timestamp = timestamp
-    this.lastHash = lastHash
-    this.data = data
-    this.hash = hash
-    this.nonce = nonce
-    this.difficulty = difficulty
-  }
+export class Block {
+  constructor(
+    public readonly timestamp: number,
+    public readonly lastHash: string,
+    public data: unknown,
+    public readonly hash: string,
+    public readonly nonce: number,
+    public readonly difficulty: number
+  ) {}
 
   static genesis() {
     const timestamp = new Date('2022-04-08').getTime()
@@ -22,7 +22,7 @@ class Block {
     return new Block(timestamp, lastHash, data, hash, nonce, 4)
   }
 
-  static mineBlock(lastBlock, data) {
+  static mineBlock(lastBlock: Block, data: unknown) {
     const lastHash = this.hashFromBlock(lastBlock)
     let { difficulty } = lastBlock
     let timestamp = Date.now()
@@ -34,28 +34,35 @@ class Block {
       timestamp = Date.now()
       difficulty = this.adjustDifficulty(lastBlock, timestamp)
       hash = this.hash(timestamp, lastHash, data, nonce, difficulty)
-    } while (
-      hash.substring(0, difficulty) !== '0'.repeat(difficulty)
-    )
+    } while (hash.substring(0, difficulty) !== '0'.repeat(difficulty))
 
     return new Block(timestamp, lastHash, data, hash, nonce, difficulty)
   }
 
-  static hash(timestamp, lastHash, data, nonce, difficulty) {
-    return Crypto.hash(`${timestamp}${lastHash}${data}${nonce}${difficulty}`).toString()
+  static hash(
+    timestamp: number,
+    lastHash: string,
+    data: unknown,
+    nonce: number,
+    difficulty: number
+  ) {
+    return Crypto.hash(
+      `${timestamp}${lastHash}${data}${nonce}${difficulty}`
+    ).toString()
   }
 
-  static hashFromBlock(block) {
+  static hashFromBlock(block: Block) {
     const { timestamp, lastHash, data, nonce, difficulty } = block
     return this.hash(timestamp, lastHash, data, nonce, difficulty)
   }
 
-  static adjustDifficulty(lastBlock, timestamp) {
+  static adjustDifficulty(lastBlock: Block, timestamp: number) {
     let { difficulty } = lastBlock
 
-    difficulty = timestamp > MINE_RATE + lastBlock.timestamp 
-      ? difficulty - 1
-      : difficulty + 1
+    difficulty =
+      timestamp > MINE_RATE + lastBlock.timestamp
+        ? difficulty - 1
+        : difficulty + 1
 
     return difficulty
   }
@@ -70,9 +77,4 @@ class Block {
       - Difficulty = ${this.difficulty}
     `
   }
-}
-
-module.exports = {
-  Block,
-  MINE_RATE,
 }

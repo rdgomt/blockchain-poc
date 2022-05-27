@@ -1,9 +1,13 @@
-const TransactionPool = require('./transaction-pool')
-const Transaction = require('./transaction')
-const Wallet = require('./wallet')
+import { Transaction } from './transaction'
+import { TransactionPool } from './transaction-pool'
+import { Wallet } from './wallet'
 
 describe('TransactionPool', () => {
-  let senderWallet, recipientAddress, amount, transaction, transactionPool
+  let senderWallet: Wallet,
+    recipientAddress: string,
+    amount: number,
+    transaction: Transaction,
+    transactionPool: TransactionPool
 
   beforeEach(() => {
     senderWallet = new Wallet()
@@ -16,7 +20,9 @@ describe('TransactionPool', () => {
   it('should be able to add a transaction to the pool', () => {
     transactionPool.addOrUpdateTransaction(transaction)
 
-    expect(transactionPool.transactions.find(t => t.id === transaction.id)).toEqual(transaction)
+    expect(
+      transactionPool.transactions.find((t) => t.id === transaction.id)
+    ).toEqual(transaction)
   })
 
   it('should be able to update a transaction in the pool', () => {
@@ -24,10 +30,17 @@ describe('TransactionPool', () => {
     const nextAmount = 20
 
     const oldTransaction = JSON.stringify(transaction)
-    const updatedTransaction = transaction.update(senderWallet, nextRecipientAddress, nextAmount)
+    const updatedTransaction = transaction.update(
+      senderWallet,
+      nextRecipientAddress,
+      nextAmount
+    )
     transactionPool.addOrUpdateTransaction(updatedTransaction)
-    
-    expect(JSON.stringify(transactionPool.transactions.find(t => t.id === updatedTransaction.id)))
-      .not.toEqual(oldTransaction)
+
+    expect(
+      JSON.stringify(
+        transactionPool.transactions.find((t) => t.id === updatedTransaction.id)
+      )
+    ).not.toEqual(oldTransaction)
   })
 })
